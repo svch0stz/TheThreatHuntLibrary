@@ -1,0 +1,72 @@
+title: Web Shells
+id: TH-0005
+author: svch0st
+playbook_link: TH-0005
+creation_date: 2020/06/28
+platform: Network
+permissions_required:
+  - User
+attack_coverage:
+  - technique: T1505
+    tactics:
+      - TA0003
+    subtechniques:
+      - T1505.003
+    coverage: Medium
+hypothesis: Adversaries may have planted web shells on internet facing web servers.
+description: |-
+  A Web shell is a Web script that is placed on an openly accessible Web server to allow an adversary to use the Web server as a gateway into a network. A Web shell may provide a set of functions to execute or a command-line interface on the system that hosts the Web server. 
+validation_dataset:
+analytics:
+  - name: Suspicious commands spawned from common web server processes
+    data_sources:
+      - Sysmon, Security
+    false_positives: Low
+    description: Isolate the log entries that contain domains hosted on dynamic DNS provider
+    logic: |-
+      title: Webshell Detection With Command Line Keywords
+      id: bed2a484-9348-4143-8a8a-b801c979301c
+      description: Detects certain command line parameters often used during reconnaissance activity via web shells
+      author: Florian Roth
+      reference:
+          - https://www.fireeye.com/blog/threat-research/2013/08/breaking-down-the-china-chopper-web-shell-part-ii.html
+      date: 2017/01/01
+      modified: 2019/10/26
+      tags:
+          - attack.privilege_escalation
+          - attack.persistence
+          - attack.t1100
+          - attack.t1505.003
+      logsource:
+          category: process_creation
+          product: windows
+      detection:
+          selection:
+              ParentImage:
+                  - '*\apache*'
+                  - '*\tomcat*'
+                  - '*\w3wp.exe'
+                  - '*\php-cgi.exe'
+                  - '*\nginx.exe'
+                  - '*\httpd.exe'
+              CommandLine:
+                  - '*whoami*'
+                  - '*net user *'
+                  - '*ping -n *'
+                  - '*systeminfo'
+                  - '*&cd&echo*'
+                  - '*cd /d*'
+          condition: selection
+      fields:
+          - CommandLine
+          - ParentCommandLine
+      falsepositives:
+          - unknown
+      level: high
+hunter_notes: |-
+
+hunt_output: |-
+
+references: |-
+  - https://www.cyber.gov.au/sites/default/files/2019-03/ACSC_Web_Shells.pdf
+  - https://media.defense.gov/2020/Jun/09/2002313081/-1/-1/0/CSI-DETECT-AND-PREVENT-WEB-SHELL-MALWARE-20200422.PDF

@@ -1,0 +1,75 @@
+# TH-0007-File Share Discovery
+
+***Creation Date:*** 2020/07/04
+
+***Author:*** svch0st
+
+***Target Platform:*** Network
+
+***Analytics:***
+
+- SMB file access (frequecy analysis) - Network Flow Data
+
+- Hunting exposed files via SMB - Custom Data Set
+
+## Hypothesis
+
+An adversary can observe and collect data on the network using SMB shares with poor permissions.
+
+## Description
+
+Recent Ransomware crews have been exfiltrating huge amounts of data and holding it ransom. SMB usage is a common trait ransomware.
+Scanning your environment for open network shares is an easy way to assess what either a malicious insider 
+
+## ATT&CK Detection
+
+|Technique|Subtechnique(s)|Tactic(s)|
+|---|---|---|
+|[Data from Network Shared Drive](https://attack.mitre.org/beta/techniques/T1039/)|N/A|[Collection](https://attack.mitre.org/beta/tactics/TA0009/)|
+
+## Analytics
+
+### SMB file access (frequecy analysis)
+
+***Data Source:*** Network Flow Data
+
+***Description:*** Look for IPs that are creating a large number of SMB reads on the network as your initial investigation point.
+
+***Logic:***
+```
+Zeek
+cat smb_files.log | zeek-cut id.orig_h | sort | uniq -c | sort -n
+```
+### Hunting exposed files via SMB
+
+***Data Source:*** Custom Data Set
+
+***Description:*** Proactively find infomation in your organisation before an adversary will. Recommend to harded the access to the shares.
+
+***Logic:***
+```
+Using Nmap & PowerView – generate a custom dataset.
+	1. Get list of reachable hosts with SMB open
+      - nmap -vv -Pn -n -p 445 <IP Range> -oA smb_host
+      - grep open smb_host.gnmap | awk {'print $2'} > smb_up.txt && cat smb_up.txt
+  2. Find shares that you have access to (using a modded Powerview see here)
+      - Invoke-ShareFinder -HostList smb_up.txt -NoPing -CheckShareAccess | Out-File -Encoding ascii found_shares.txt
+  3. Find files in shares that have potentially interesting names
+      - Invoke-FileFinder -ShareList found_shares.txt -Terms password,secret,confidential -OutFile results.csv -Verbose
+```
+
+## Atomic Tests
+
+
+## Hunter Notes
+
+Test access to shares using `Get-Acl`
+
+## Hunt Outputs
+
+List of open shares with low permissions
+Highlight key findings such as password or confidential files
+
+## References
+
+- https://www.dionach.com/blog/discovering-sensitive-information-in-file-shares/

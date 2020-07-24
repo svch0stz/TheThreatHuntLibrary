@@ -1,0 +1,63 @@
+title: Autoruns Analysis
+id: TH-0006
+author: svch0st
+playbook_link: TH-0006
+creation_date: 2020/06/28
+platform: Windows
+permissions_required:
+  - User
+attack_coverage:
+  - technique: T1543
+    tactics:
+      - TA0003
+      - TA0002
+    subtechniques:
+      - T1543.003
+  - technique: T1053
+    tactics:
+      - TA0002
+      - TA0003
+      - TA0004
+    subtechniques:
+      - T1053.002
+      - T1053.005
+  - technique: T1546
+    tactics:
+      - TA0003
+      - TA0004
+    subtechniques:
+      - T1546.003
+      - T1546.012
+      - T1546.013
+  - technique: T1037
+    tactics:
+      - TA0003
+      - TA0004
+    subtechniques:
+      - T1037.001
+      - T1037.005
+  - technique: T1547
+    tactics:
+      - TA0003
+      - TA0004
+    subtechniques:
+      - T1547.001
+    coverage: Medium
+hypothesis: Adversaries may try to gain persistence by using the autorun or ASEP locations in Windows
+description: |-
+  The Sysinternals tool Autoruns checks the registry and file system for known identify persistence mechanisms. It will output any tools identified, including built-in or added-on Microsoft functionality and third party software. Many of these locations are known by adversaries and used to obtain Persistence.
+validation_dataset:
+analytics:
+  - name: Autorunsc.exe
+    data_sources:
+      - Custom Output
+    false_positives: Low
+    description: wsdadas
+    logic: |-
+
+hunter_notes: |-
+
+hunt_output: |-
+
+references: |-
+  - https://car.mitre.org/analytics/CAR-2013-01-002/

@@ -1,0 +1,93 @@
+title: Compromise via external media and devices
+id: TH-0003
+author: svch0st
+playbook_link: TH-0003
+creation_date: 2020/06/28
+platform: Windows
+permissions_required:
+  - User
+attack_coverage:
+  - technique: T1091
+    tactics:
+      - TA0001
+      - TA0008
+  - technique: T1052
+    tactics:
+      - TA0010
+    subtechniques:
+      - T1052.001
+    coverage: Medium
+hypothesis: Adversaries may move onto systems, possibly those on disconnected or air-gapped networks, by copying malware to removable media and taking advantage of Autorun features when the media is inserted into a system and executes
+description: |-
+  When a piece of malware gets onto a USB flash drive, it may infect the devices into which that drive is subsequently plugged. 
+  The Windows autorun.inf file contains information on programs meant to run automatically when removable media (often USB flash drives and similar devices) are accessed by a Windows PC user.
+validation_dataset:
+analytics:
+  - name: Unique USB storage devices in EDR (Least Frequency of Occurence)
+    data_sources:
+      - Microsoft Defender ATP
+    false_positives: Medium
+    description: Find USB storage devices that are unique to the organisation. Analyse the Vendor IDs and users to see if they are authorised to use such devices.
+    logic: |-
+      let devices =
+      DeviceEvents
+      | where ActionType == "PnpDeviceConnected"
+      | extend parsed=parse_json(AdditionalFields)
+      | project 
+          DeviceDescription=tostring(parsed.DeviceDescription),
+          ClassName=tostring(parsed.ClassName),
+          DeviceId=tostring(parsed.VendorIds),
+          VendorIds=tostring(parsed.VendorIds),
+          DeviceName, Timestamp ;
+      devices
+      | summarize TimesConnected=count(), FirstTime=min(Timestamp), LastTime=max(Timestamp) by DeviceId, DeviceDescription, ClassName, VendorIds, DeviceName
+      | join kind=leftanti 
+        (devices | summarize Machines=dcount(DeviceName) by DeviceId, DeviceDescription, VendorIds | where Machines > 1)
+        on DeviceId, DeviceDescription, VendorIds
+      | where ClassName in ("DiskDrive", "CDROM")
+          or ClassName contains "nas"
+          or ClassName contains "SCSI"
+          or ClassName == "USB"
+  - name: Unique USB storage devices (Least Frequency of Occurence)
+    data_sources: 
+      - sigma
+      - Security
+    false_positives: Medium
+    description: Find USB devices that are unique to the organisation. Analyse the Vendor IDs and users to see if they are authorised to use such devices.
+    logic: |-
+      https://raw.githubusercontent.com/Neo23x0/sigma/master/rules/windows/builtin/win_usb_device_plugged.yml
+      
+      title: USB Device Plugged
+      id: 1a4bd6e3-4c6e-405d-a9a3-53a116e341d4
+      description: Detects plugged USB devices
+      references:
+          - https://df-stream.com/2014/01/the-windows-7-event-log-and-usb-device/
+          - https://www.techrepublic.com/article/how-to-track-down-usb-flash-drive-usage-in-windows-10s-event-viewer/
+      status: experimental
+      author: Florian Roth
+      date: 2017/11/09
+      tags:
+          - attack.initial_access
+          - attack.t1200
+      logsource:
+          product: windows
+          service: driver-framework
+      detection:
+          selection:
+              EventID:
+                  - 2003  # Loading drivers
+                  - 2100  # Pnp or power management
+                  - 2102  # Pnp or power management
+          condition: selection
+      falsepositives:
+          - Legitimate administrative activity
+      level: low
+hunter_notes: |-
+  - Use https://the-sz.com/products/usbid/ to look up the VID and PID of the USB device to get additional information.
+hunt_output: |-
+  - A baseline of devices connected to the enterprise
+  - USB VID/PID safelist to deploy to endpoints
+references: |-
+  - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=6416
+  - https://www.andreafortuna.org/2018/02/09/usb-devices-in-windows-forensic-analysis/
+  - https://the-sz.com/products/usbid/

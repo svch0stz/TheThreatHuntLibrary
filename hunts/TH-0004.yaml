@@ -1,0 +1,69 @@
+title: Suspicious network traffic over DNS
+id: TH-0004
+author: svch0st
+playbook_link: TH-0004
+creation_date: 2020/06/28
+platform: Network
+permissions_required:
+  - User
+attack_coverage:
+  - technique: T1568
+    tactics:
+      - TA0011
+    subtechniques:
+      - T1568.002
+  - technique: T1071
+    tactics:
+      - TA0011
+    subtechniques:
+      - T1071.004
+  - technique: T1048
+    tactics:
+      - TA0010
+    subtechniques:
+      - T1048.003
+    coverage: Medium
+hypothesis: Adversaries may use DNS to hide C2 traffic or data exfiltration
+description: |-
+  DNS Tunneling is a method of cyber attack that encodes the data of other programs or protocols in DNS queries and responses. This can be used for the exfiltration of data or as a command channel.
+validation_dataset:
+analytics:
+  - name: Dynamic DNS
+    data_sources:
+      - Network Flow Data, DNS logs
+    false_positives: Low
+    description: Isolate the log entries that contain domains hosted on dynamic DNS provider. 
+    logic: |-
+      Use a lookup list of Dynamic DNS providers to query against. (hopto.org,dyndns.org,no-ip.org,us.to etc)
+      select * from events where domain in <lookup list>
+  - name: Long Domains
+    data_sources: 
+      - Network Flow Data, DNS Logs
+    false_positives: Medium
+    description: A domain name is limited to 253 characters long and each subdomain is limited to 63 characters. Looking for queries that are close to these values can indicate malicious use of DNS.
+    logic: |-
+      cat dns.log | zeek-cut query | sort | uniq | awk '{ print length, $0 }' | sort -n -s
+  - name: DGA-like detection
+    data_sources: 
+      - Network Flow Data, DNS Logs
+    false_positives: Medium
+    description: Detecting randomness using Mark Baggett's `freq.py` tool (see references)
+    logic: |-
+      freq.exe --measure <domain name> <frequency table>
+  - name: Requests to thousands of hosts or subdomains in one domain
+    data_sources: 
+      - Network Flow Data, DNS Logs
+    false_positives: Medium
+    description: Count how many unique subdomain queries were made per domain.
+    logic: |-
+      cat dns.log | zeek-cut query | sort | uniq | rev | cut -d '.' -f 1-2 | rev | sort | uniq -c | sort -nr | head
+hunter_notes: |-
+
+hunt_output: |-
+
+references: |-
+  - https://github.com/sans-blue-team/freq.py
+  - https://isc.sans.edu/diary/Detecting+Random+-+Finding+Algorithmically+chosen+DNS+names+%28DGA%29/19893
+  - https://www.ericconrad.com/2020/03/threat-hunting-via-dns.html
+  - https://activecm.github.io/threat-hunting-labs/dns/
+  - https://blog.redteam.pl/2019/08/threat-hunting-dns-firewall.html
