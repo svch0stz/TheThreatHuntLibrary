@@ -32,7 +32,7 @@ Even though most adversaries might inject into a System process to blend in with
 
 |Technique|Subtechnique(s)|Tactic(s)|
 |---|---|---|
-|[OS Credential Dumping](https://attack.mitre.org/beta/techniques/T1003/)|[LSASS Memory](https://attack.mitre.org/beta/techniques/T1003/001/)|[Credential Access](https://attack.mitre.org/beta/tactics/TA0006/)|
+|[OS Credential Dumping](https://attack.mitre.org/techniques/T1003/)|[LSASS Memory](https://attack.mitre.org/techniques/T1003/001/)|[Credential Access](https://attack.mitre.org/tactics/TA0006/)|
 
 ## Analytics
 

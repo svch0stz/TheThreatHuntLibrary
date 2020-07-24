@@ -22,7 +22,7 @@ A Web shell is a Web script that is placed on an openly accessible Web server to
 
 |Technique|Subtechnique(s)|Tactic(s)|
 |---|---|---|
-|[Server Software Component](https://attack.mitre.org/beta/techniques/T1505/)|[Web Shell](https://attack.mitre.org/beta/techniques/T1505/003/)|[Persistence](https://attack.mitre.org/beta/tactics/TA0003/)|
+|[Server Software Component](https://attack.mitre.org/techniques/T1505/)|[Web Shell](https://attack.mitre.org/techniques/T1505/003/)|[Persistence](https://attack.mitre.org/tactics/TA0003/)|
 
 ## Analytics
 

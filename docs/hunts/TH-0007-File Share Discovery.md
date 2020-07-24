@@ -25,7 +25,7 @@ Scanning your environment for open network shares is an easy way to assess what 
 
 |Technique|Subtechnique(s)|Tactic(s)|
 |---|---|---|
-|[Data from Network Shared Drive](https://attack.mitre.org/beta/techniques/T1039/)|N/A|[Collection](https://attack.mitre.org/beta/tactics/TA0009/)|
+|[Data from Network Shared Drive](https://attack.mitre.org/techniques/T1039/)|N/A|[Collection](https://attack.mitre.org/tactics/TA0009/)|
 
 ## Analytics
 

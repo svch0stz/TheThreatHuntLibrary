@@ -10,9 +10,9 @@
 
 - HTTP/S User Agents (Least Frequency of Occurence) - Proxy, Network Flow Data
 
-- Beaconing and Session Timing - Network Metadata
+- Beaconing and Session Timing - Network Flow Data
 
-- DNS C2 - Network Metadata
+- DNS C2 - Network Flow Data
 
 ## Hypothesis
 
@@ -27,7 +27,7 @@ Adversaries may utilize many different protocols, including those used for web b
 
 |Technique|Subtechnique(s)|Tactic(s)|
 |---|---|---|
-|[Application Layer Protocol](https://attack.mitre.org/beta/techniques/T1071/)|[Web Protocols](https://attack.mitre.org/beta/techniques/T1071/001/), [File Transfer Protocols](https://attack.mitre.org/beta/techniques/T1071/002/), [Mail Protocols](https://attack.mitre.org/beta/techniques/T1071/003/), [DNS](https://attack.mitre.org/beta/techniques/T1071/004/)|[Command and Control](https://attack.mitre.org/beta/tactics/TA0011/)|
+|[Application Layer Protocol](https://attack.mitre.org/techniques/T1071/)|[Web Protocols](https://attack.mitre.org/techniques/T1071/001/), [File Transfer Protocols](https://attack.mitre.org/techniques/T1071/002/), [Mail Protocols](https://attack.mitre.org/techniques/T1071/003/), [DNS](https://attack.mitre.org/techniques/T1071/004/)|[Command and Control](https://attack.mitre.org/tactics/TA0011/)|
 
 ## Analytics
 
@@ -49,7 +49,7 @@ Zeek Data
 ```
 ### Beaconing and Session Timing
 
-***Data Source:*** Network Metadata
+***Data Source:*** Network Flow Data
 
 ***Description:*** Many RATs communicate with a fixed heartbeat and others keep a session open for long periods of time.
 
@@ -60,7 +60,7 @@ RITA (see references)
 ```
 ### DNS C2
 
-***Data Source:*** Network Metadata
+***Data Source:*** Network Flow Data
 
 ***Description:*** Using frequency analysis to potentially identify DNS based C2 channels. You are looking for a large number of subdomain requests to the same domain that may be DGA-like in nature.
 

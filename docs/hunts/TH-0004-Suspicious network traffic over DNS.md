@@ -14,7 +14,7 @@
 
 - DGA-like detection - Network Flow Data, DNS Logs
 
-- Requests to thousands of hosts or subdomains in one domain - Network Metadata
+- Requests to thousands of hosts or subdomains in one domain - Network Flow Data, DNS Logs
 
 ## Hypothesis
 
@@ -28,9 +28,9 @@ DNS Tunneling is a method of cyber attack that encodes the data of other program
 
 |Technique|Subtechnique(s)|Tactic(s)|
 |---|---|---|
-|[Dynamic Resolution](https://attack.mitre.org/beta/techniques/T1568/)|[Domain Generation Algorithms](https://attack.mitre.org/beta/techniques/T1568/002/)|[Command and Control](https://attack.mitre.org/beta/tactics/TA0011/)|
-|[Application Layer Protocol](https://attack.mitre.org/beta/techniques/T1071/)|[DNS](https://attack.mitre.org/beta/techniques/T1071/004/)|[Command and Control](https://attack.mitre.org/beta/tactics/TA0011/)|
-|[Exfiltration Over Alternative Protocol](https://attack.mitre.org/beta/techniques/T1048/)|[Exfiltration Over Unencrypted/Obfuscated Non-C2 Protocol](https://attack.mitre.org/beta/techniques/T1048/003/)|[Exfiltration](https://attack.mitre.org/beta/tactics/TA0010/)|
+|[Dynamic Resolution](https://attack.mitre.org/techniques/T1568/)|[Domain Generation Algorithms](https://attack.mitre.org/techniques/T1568/002/)|[Command and Control](https://attack.mitre.org/tactics/TA0011/)|
+|[Application Layer Protocol](https://attack.mitre.org/techniques/T1071/)|[DNS](https://attack.mitre.org/techniques/T1071/004/)|[Command and Control](https://attack.mitre.org/tactics/TA0011/)|
+|[Exfiltration Over Alternative Protocol](https://attack.mitre.org/techniques/T1048/)|[Exfiltration Over Unencrypted/Obfuscated Non-C2 Protocol](https://attack.mitre.org/techniques/T1048/003/)|[Exfiltration](https://attack.mitre.org/tactics/TA0010/)|
 
 ## Analytics
 
@@ -67,7 +67,7 @@ freq.exe --measure <domain name> <frequency table>
 ```
 ### Requests to thousands of hosts or subdomains in one domain
 
-***Data Source:*** Network Metadata
+***Data Source:*** Network Flow Data, DNS Logs
 
 ***Description:*** Count how many unique subdomain queries were made per domain.
 

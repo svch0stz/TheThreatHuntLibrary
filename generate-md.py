@@ -89,7 +89,7 @@ for hunt in sorted(hunts, key = lambda k: k['id']):
     if 'attack_coverage' in hunt and len(hunt['attack_coverage']) > 0:
         coverage += "<ul style='margin-bottom: 0;'>"
         for cov in hunt['attack_coverage']:
-          coverage += "<li><a href=\"https://attack.mitre.org/beta/techniques/{}/\">{}</a></li>".format(cov['technique'], cov['technique'] + "-" + techniques[cov['technique']]) 
+          coverage += "<li><a href=\"https://attack.mitre.org/techniques/{}/\">{}</a></li>".format(cov['technique'], cov['technique'] + "-" + techniques[cov['technique']]) 
           # Get all of the techniques seen in all hunts
           # This is for building the second (subtechniques based) table
           if cov['technique'] not in table_techniques:
@@ -132,7 +132,7 @@ for tid in table_techniques:
     else:
         none_str = "(N/A - see below)"
     if len(sub_bucket.keys()) > 1:
-      subtechnique_table += "|[{}-{}](https://attack.mitre.org/beta/techniques/{}/)|{}|{}|\n".format(tid,techniques[tid],tid,none_sub_str,none_str)
+      subtechnique_table += "|[{}-{}](https://attack.mitre.org/techniques/{}/)|{}|{}|\n".format(tid,techniques[tid],tid,none_sub_str,none_str)
     # Write the subtechniques to the table
     if sub_bucket:
         for sub_tid, car_list in sub_bucket.items():
@@ -143,9 +143,9 @@ for tid in table_techniques:
             # Write the sub-technique entry to the table
             # Corner case where there is only one sub-technique and no technique-only analytics
             if not none_bucket and len(sub_bucket.keys()) == 1:
-              subtechnique_table += "|[{}-{}](https://attack.mitre.org/beta/techniques/{}/)|[{}-{}](https://attack.mitre.org/beta/techniques/{}/{}/)|{}|\n".format(tid,techniques[tid],tid,sub_tid,techniques[sub_tid],sub_tid.split(".")[0],sub_tid.split(".")[1],sub_str)
+              subtechnique_table += "|[{}-{}](https://attack.mitre.org/techniques/{}/)|[{}-{}](https://attack.mitre.org/techniques/{}/{}/)|{}|\n".format(tid,techniques[tid],tid,sub_tid,techniques[sub_tid],sub_tid.split(".")[0],sub_tid.split(".")[1],sub_str)
             else:
-              subtechnique_table += "|...|[{}-{}](https://attack.mitre.org/beta/techniques/{}/{}/)|{}|\n".format(sub_tid,techniques[sub_tid],sub_tid.split(".")[0],sub_tid.split(".")[1],sub_str)
+              subtechnique_table += "|...|[{}-{}](https://attack.mitre.org/techniques/{}/{}/)|{}|\n".format(sub_tid,techniques[sub_tid],sub_tid.split(".")[0],sub_tid.split(".")[1],sub_str)
 
 # Write the tables
 index_file = open('docs/index.md', 'w')

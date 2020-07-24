@@ -25,8 +25,8 @@ The Windows autorun.inf file contains information on programs meant to run autom
 
 |Technique|Subtechnique(s)|Tactic(s)|
 |---|---|---|
-|[Replication Through Removable Media](https://attack.mitre.org/beta/techniques/T1091/)|N/A|[Initial Access](https://attack.mitre.org/beta/tactics/TA0001/), [Lateral Movement](https://attack.mitre.org/beta/tactics/TA0008/)|
-|[Exfiltration Over Physical Medium](https://attack.mitre.org/beta/techniques/T1052/)|[Exfiltration over USB](https://attack.mitre.org/beta/techniques/T1052/001/)|[Exfiltration](https://attack.mitre.org/beta/tactics/TA0010/)|
+|[Replication Through Removable Media](https://attack.mitre.org/techniques/T1091/)|N/A|[Initial Access](https://attack.mitre.org/tactics/TA0001/), [Lateral Movement](https://attack.mitre.org/tactics/TA0008/)|
+|[Exfiltration Over Physical Medium](https://attack.mitre.org/techniques/T1052/)|[Exfiltration over USB](https://attack.mitre.org/techniques/T1052/001/)|[Exfiltration](https://attack.mitre.org/tactics/TA0010/)|
 
 ## Analytics
 

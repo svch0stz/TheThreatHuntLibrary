@@ -22,7 +22,7 @@
 {% if 'attack_coverage' in hunt %}
 |Technique|Subtechnique(s)|Tactic(s)|
 |---|---|---|{% for coverage_item in hunt['attack_coverage'] %}
-|[{{techniques[coverage_item['technique']]}}](https://attack.mitre.org/beta/techniques/{{coverage_item['technique']}}/)|{% if 'subtechniques' in coverage_item %}{% for subtechnique in coverage_item['subtechniques'] %}[{{techniques[subtechnique]}}](https://attack.mitre.org/beta/techniques/{{subtechnique | replace(".","/")}}/){% if not loop.last %}, {% endif %}{% endfor %}{% else %}N/A{% endif %}|{% for tactic in coverage_item['tactics'] %}[{{tactics[tactic]}}](https://attack.mitre.org/beta/tactics/{{tactic}}/){% if not loop.last %}, {% endif %}{% endfor %}|{% endfor %}{% endif %}
+|[{{techniques[coverage_item['technique']]}}](https://attack.mitre.org/techniques/{{coverage_item['technique']}}/)|{% if 'subtechniques' in coverage_item %}{% for subtechnique in coverage_item['subtechniques'] %}[{{techniques[subtechnique]}}](https://attack.mitre.org/techniques/{{subtechnique | replace(".","/")}}/){% if not loop.last %}, {% endif %}{% endfor %}{% else %}N/A{% endif %}|{% for tactic in coverage_item['tactics'] %}[{{tactics[tactic]}}](https://attack.mitre.org/tactics/{{tactic}}/){% if not loop.last %}, {% endif %}{% endfor %}|{% endfor %}{% endif %}
 
 ## Analytics
 {% if 'analytics' in hunt %}{% for analytic in hunt['analytics'] %}
