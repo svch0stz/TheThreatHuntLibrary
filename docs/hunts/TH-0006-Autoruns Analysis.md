@@ -34,11 +34,12 @@ The Sysinternals tool Autoruns checks the registry and file system for known ide
 
 ***Data Source:*** Custom Output
 
-***Description:*** wsdadas
+***Description:*** Running the tool and outputting it to a network share will allow you to analyse these important data points
 
 ***Logic:***
 ```
-
+Use frequency analysis on the entries to look at abnormalites on your systems
+Compare a snapshot of a known good image to filter out the noise of save or expected entries.
 ```
 
 ## Atomic Tests

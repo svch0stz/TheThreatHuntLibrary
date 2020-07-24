@@ -52,9 +52,10 @@ analytics:
     data_sources:
       - Custom Output
     false_positives: Low
-    description: wsdadas
+    description: Running the tool and outputting it to a network share will allow you to analyse these important data points
     logic: |-
-
+      Use frequency analysis on the entries to look at abnormalites on your systems
+      Compare a snapshot of a known good image to filter out the noise of save or expected entries.
 hunter_notes: |-
 
 hunt_output: |-
