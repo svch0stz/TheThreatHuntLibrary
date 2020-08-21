@@ -49,7 +49,7 @@ analytics:
     description: Calculate bytes out or bytes transferred per Source IP and Destination IP pairs in a given period
     logic: |-
       cat conn.*log | bro-cut id.orig_h id.resp_h orig_bytes | sort | grep -v -e '^$' | grep -v '-' | datamash -g 1,2 sum 3 | sort -k 3 -rn | head -10
- - name: High counts of HTTP Errors by status code
+  - name: High counts of HTTP Errors by status code
     data_sources:
       - Proxy
     false_positives: Medium (remove expected results such as Office or Microsoft)

@@ -16,6 +16,8 @@
 
 - Requests to thousands of hosts or subdomains in one domain - Network Flow Data, DNS Logs
 
+- DNS C2 - Network Flow Data
+
 ## Hypothesis
 
 Adversaries may use DNS to hide C2 traffic or data exfiltration
@@ -74,6 +76,20 @@ freq.exe --measure <domain name> <frequency table>
 ***Logic:***
 ```
 cat dns.log | zeek-cut query | sort | uniq | rev | cut -d '.' -f 1-2 | rev | sort | uniq -c | sort -nr | head
+```
+### DNS C2
+
+***Data Source:*** Network Flow Data
+
+***Description:*** Using frequency analysis to potentially identify DNS based C2 channels. You are looking for a large number of subdomain requests to the same domain that may be DGA-like in nature.
+
+***Logic:***
+```
+Zeek Unique DNS Queries
+      cat dns.log | zeek-cut query | sort | uniq | rev | cut -d '.' -f 1-2 | rev | sort | uniq -c | sort -nr | head
+
+RITA (see references)
+      rita show-exploded-dns -H <dataset name>
 ```
 
 ## Atomic Tests
