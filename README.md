@@ -4,6 +4,8 @@ A collection of organised hunts based of yaml files to create markdown pages for
 
 ## Link to the [Threat Hunt Library](docs/index.md)
 
+#### Link to [Medium Article](https://medium.com/@7a616368/how-to-start-threat-hunting-even-if-your-team-is-small-a31e656b8ba1)
+
 ### Methodology
 
 An important part of Threat Hunting sustainably is to create clear and concise documentation, in case someone needs to repeat your work, or take over from where you left off.
