@@ -57,6 +57,17 @@ analytics:
     description: Count how many unique subdomain queries were made per domain.
     logic: |-
       cat dns.log | zeek-cut query | sort | uniq | rev | cut -d '.' -f 1-2 | rev | sort | uniq -c | sort -nr | head
+  - name: DNS C2
+    data_sources:
+      - Network Flow Data
+    false_positives: Low
+    description: Using frequency analysis to potentially identify DNS based C2 channels. You are looking for a large number of subdomain requests to the same domain that may be DGA-like in nature.
+    logic: |-
+      Zeek Unique DNS Queries
+            cat dns.log | zeek-cut query | sort | uniq | rev | cut -d '.' -f 1-2 | rev | sort | uniq -c | sort -nr | head
+      
+      RITA (see references)
+            rita show-exploded-dns -H <dataset name>
 hunter_notes: |-
 
 hunt_output: |-

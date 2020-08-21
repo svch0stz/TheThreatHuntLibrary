@@ -1,4 +1,4 @@
-title: C2 Beaconing via Standard Protocols
+title: C2 Beaconing and Exfiltration via Standard Protocols
 id: TH-0002
 author: svch0st
 playbook_link: TH-0002
@@ -34,7 +34,7 @@ analytics:
       
       Zeek Data
             cat http.log | zeek-cut user_agent | sort | uniq -c | sort -n
-  - name: Beaconing and Session Timing
+  - name: Beaconing and Session Timing using RITA
     data_sources:
       - Network Flow Data
     false_positives: Low
@@ -42,17 +42,20 @@ analytics:
     logic: |-
       RITA (see references)
             rita show-beacons <dataset name>
-  - name: DNS C2
+  - name: Data uploaded per Source/Destination pair
     data_sources:
-      - Network Flow Data
-    false_positives: Low
-    description: Using frequency analysis to potentially identify DNS based C2 channels. You are looking for a large number of subdomain requests to the same domain that may be DGA-like in nature.
+      - Network Flow Data, Proxy
+    false_positives: Medium (remove expected results such as Office or Microsoft)
+    description: Calculate bytes out or bytes transferred per Source IP and Destination IP pairs in a given period
     logic: |-
-      Zeek Unique DNS Queries
-            cat dns.log | zeek-cut query | sort | uniq | rev | cut -d '.' -f 1-2 | rev | sort | uniq -c | sort -nr | head
-      
-      RITA (see references)
-            rita show-exploded-dns -H <dataset name>
+      cat conn.*log | bro-cut id.orig_h id.resp_h orig_bytes | sort | grep -v -e '^$' | grep -v '-' | datamash -g 1,2 sum 3 | sort -k 3 -rn | head -10
+ - name: High counts of HTTP Errors by status code
+    data_sources:
+      - Proxy
+    false_positives: Medium (remove expected results such as Office or Microsoft)
+    description: List the URLs that only have HTTP errors
+    logic: |-
+      TODO
 hunter_notes: |-
   * TODO 
 hunt_output:
